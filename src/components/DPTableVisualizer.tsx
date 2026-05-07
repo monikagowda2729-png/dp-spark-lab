@@ -50,8 +50,8 @@ export function DPTableVisualizer({
   useEffect(() => {
     if (currentStep < 0) return;
     setTable((prev) => {
-      const next = prev.map((row) =>
-        row.map((c) => ({ ...c, state: c.state === "active" ? ("done" as const) : c.state }))
+      const next: CellState[][] = prev.map((row) =>
+        row.map((c): CellState => ({ ...c, state: c.state === "active" ? "done" : c.state }))
       );
       if (currentStep < steps.length) {
         const s = steps[currentStep];
