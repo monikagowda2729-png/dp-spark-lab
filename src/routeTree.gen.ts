@@ -9,8 +9,44 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as VisualizerRouteImport } from './routes/visualizer'
+import { Route as PerformanceRouteImport } from './routes/performance'
+import { Route as LearningRouteImport } from './routes/learning'
+import { Route as ComplexityRouteImport } from './routes/complexity'
+import { Route as ComparisonRouteImport } from './routes/comparison'
+import { Route as AboutDpRouteImport } from './routes/about-dp'
 import { Route as IndexRouteImport } from './routes/index'
 
+const VisualizerRoute = VisualizerRouteImport.update({
+  id: '/visualizer',
+  path: '/visualizer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PerformanceRoute = PerformanceRouteImport.update({
+  id: '/performance',
+  path: '/performance',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LearningRoute = LearningRouteImport.update({
+  id: '/learning',
+  path: '/learning',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ComplexityRoute = ComplexityRouteImport.update({
+  id: '/complexity',
+  path: '/complexity',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ComparisonRoute = ComparisonRouteImport.update({
+  id: '/comparison',
+  path: '/comparison',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutDpRoute = AboutDpRouteImport.update({
+  id: '/about-dp',
+  path: '/about-dp',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +55,116 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about-dp': typeof AboutDpRoute
+  '/comparison': typeof ComparisonRoute
+  '/complexity': typeof ComplexityRoute
+  '/learning': typeof LearningRoute
+  '/performance': typeof PerformanceRoute
+  '/visualizer': typeof VisualizerRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about-dp': typeof AboutDpRoute
+  '/comparison': typeof ComparisonRoute
+  '/complexity': typeof ComplexityRoute
+  '/learning': typeof LearningRoute
+  '/performance': typeof PerformanceRoute
+  '/visualizer': typeof VisualizerRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about-dp': typeof AboutDpRoute
+  '/comparison': typeof ComparisonRoute
+  '/complexity': typeof ComplexityRoute
+  '/learning': typeof LearningRoute
+  '/performance': typeof PerformanceRoute
+  '/visualizer': typeof VisualizerRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/about-dp'
+    | '/comparison'
+    | '/complexity'
+    | '/learning'
+    | '/performance'
+    | '/visualizer'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/about-dp'
+    | '/comparison'
+    | '/complexity'
+    | '/learning'
+    | '/performance'
+    | '/visualizer'
+  id:
+    | '__root__'
+    | '/'
+    | '/about-dp'
+    | '/comparison'
+    | '/complexity'
+    | '/learning'
+    | '/performance'
+    | '/visualizer'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutDpRoute: typeof AboutDpRoute
+  ComparisonRoute: typeof ComparisonRoute
+  ComplexityRoute: typeof ComplexityRoute
+  LearningRoute: typeof LearningRoute
+  PerformanceRoute: typeof PerformanceRoute
+  VisualizerRoute: typeof VisualizerRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/visualizer': {
+      id: '/visualizer'
+      path: '/visualizer'
+      fullPath: '/visualizer'
+      preLoaderRoute: typeof VisualizerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/performance': {
+      id: '/performance'
+      path: '/performance'
+      fullPath: '/performance'
+      preLoaderRoute: typeof PerformanceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/learning': {
+      id: '/learning'
+      path: '/learning'
+      fullPath: '/learning'
+      preLoaderRoute: typeof LearningRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/complexity': {
+      id: '/complexity'
+      path: '/complexity'
+      fullPath: '/complexity'
+      preLoaderRoute: typeof ComplexityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/comparison': {
+      id: '/comparison'
+      path: '/comparison'
+      fullPath: '/comparison'
+      preLoaderRoute: typeof ComparisonRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about-dp': {
+      id: '/about-dp'
+      path: '/about-dp'
+      fullPath: '/about-dp'
+      preLoaderRoute: typeof AboutDpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,17 +177,13 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutDpRoute: AboutDpRoute,
+  ComparisonRoute: ComparisonRoute,
+  ComplexityRoute: ComplexityRoute,
+  LearningRoute: LearningRoute,
+  PerformanceRoute: PerformanceRoute,
+  VisualizerRoute: VisualizerRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
