@@ -105,10 +105,6 @@ function FibonacciVisualizer() {
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
           <NeonInput label="Value of n" value={n} onChange={(v) => setN(Math.max(2, Math.min(20, Number(v) || 2)))} min={2} max={20} />
         </div>
-        <div className="flex items-center gap-4">
-          <input type="range" min={2} max={20} value={n} onChange={(e) => setN(Number(e.target.value))} className="flex-1 accent-primary" />
-          <span className="font-mono text-primary font-bold w-8 text-right">{n}</span>
-        </div>
       </GlassCard>
 
       <DPTableVisualizer
