@@ -169,7 +169,7 @@ function KnapsackVisualizer() {
         <p className="text-sm text-muted-foreground">
           Enter item weights, values, and knapsack capacity. The system dynamically generates the DP table and highlights the optimal selection.
         </p>
-        <NeonInput label="Knapsack Capacity (W)" value={capacity} onChange={(v) => setCapacity(Math.max(1, Math.min(15, Number(v) || 1)))} min={1} max={15} className="max-w-xs" />
+        <NeonInput label="Knapsack Capacity (W)" value={capacity} onChange={(v) => setCapacity(Number(v) || 0)} className="max-w-xs" />
 
         <div className="space-y-2">
           <div className="flex items-center justify-between">
