@@ -150,7 +150,7 @@ function KnapsackVisualizer() {
   const removeItem = (idx: number) => items.length > 1 && setItems(items.filter((_, i) => i !== idx));
   const updateItem = (idx: number, field: "weight" | "value", val: number) => {
     const next = [...items];
-    next[idx] = { ...next[idx], [field]: Math.max(1, val) };
+    next[idx] = { ...next[idx], [field]: Number.isFinite(val) ? val : 0 };
     setItems(next);
   };
 
