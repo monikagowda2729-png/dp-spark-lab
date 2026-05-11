@@ -83,15 +83,16 @@ function NeonInput({ label, value, onChange, type = "number", min, max, placehol
 function FibonacciVisualizer() {
   const [n, setN] = useState(8);
 
-  const { dpArray, steps, initialTable, colHeaders } = useMemo(() => {
-    const clamped = Math.max(2, Math.min(20, n));
-    const dp = [0, 1];
-    for (let i = 2; i <= clamped; i++) dp[i] = dp[i - 1] + dp[i - 2];
+  const { steps, initialTable, colHeaders } = useMemo(() => {
+    const safe = Math.max(0, Number.isFinite(n) ? Math.floor(n) : 0);
+    const dp: number[] = [];
+    if (safe >= 0) dp.push(0);
+    if (safe >= 1) dp.push(1);
+    for (let i = 2; i <= safe; i++) dp.push(dp[i - 1] + dp[i - 2]);
     return {
-      dpArray: dp,
       steps: dp.map((val, i) => ({ row: 0, col: i, value: val })),
       initialTable: [dp.map(() => ({ value: 0 as number | string, state: "default" as const }))],
-      colHeaders: Array.from({ length: clamped + 1 }, (_, i) => String(i)),
+      colHeaders: Array.from({ length: dp.length }, (_, i) => String(i)),
     };
   }, [n]);
 
@@ -103,7 +104,7 @@ function FibonacciVisualizer() {
           Enter the value of <strong>n</strong> to generate the Fibonacci sequence. Watch the DP array fill left to right — each cell is the sum of the two previous cells.
         </p>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-          <NeonInput label="Value of n" value={n} onChange={(v) => setN(Math.max(2, Math.min(20, Number(v) || 2)))} min={2} max={20} />
+          <NeonInput label="Value of n" value={n} onChange={(v) => setN(Number(v) || 0)} />
         </div>
       </GlassCard>
 
