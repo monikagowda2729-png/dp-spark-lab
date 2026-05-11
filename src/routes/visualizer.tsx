@@ -83,15 +83,16 @@ function NeonInput({ label, value, onChange, type = "number", min, max, placehol
 function FibonacciVisualizer() {
   const [n, setN] = useState(8);
 
-  const { dpArray, steps, initialTable, colHeaders } = useMemo(() => {
-    const clamped = Math.max(2, Math.min(20, n));
-    const dp = [0, 1];
-    for (let i = 2; i <= clamped; i++) dp[i] = dp[i - 1] + dp[i - 2];
+  const { steps, initialTable, colHeaders } = useMemo(() => {
+    const safe = Math.max(0, Number.isFinite(n) ? Math.floor(n) : 0);
+    const dp: number[] = [];
+    if (safe >= 0) dp.push(0);
+    if (safe >= 1) dp.push(1);
+    for (let i = 2; i <= safe; i++) dp.push(dp[i - 1] + dp[i - 2]);
     return {
-      dpArray: dp,
       steps: dp.map((val, i) => ({ row: 0, col: i, value: val })),
       initialTable: [dp.map(() => ({ value: 0 as number | string, state: "default" as const }))],
-      colHeaders: Array.from({ length: clamped + 1 }, (_, i) => String(i)),
+      colHeaders: Array.from({ length: dp.length }, (_, i) => String(i)),
     };
   }, [n]);
 
@@ -103,7 +104,7 @@ function FibonacciVisualizer() {
           Enter the value of <strong>n</strong> to generate the Fibonacci sequence. Watch the DP array fill left to right — each cell is the sum of the two previous cells.
         </p>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-          <NeonInput label="Value of n" value={n} onChange={(v) => setN(Math.max(2, Math.min(20, Number(v) || 2)))} min={2} max={20} />
+          <NeonInput label="Value of n" value={n} onChange={(v) => setN(Number(v) || 0)} />
         </div>
       </GlassCard>
 
@@ -149,7 +150,7 @@ function KnapsackVisualizer() {
   const removeItem = (idx: number) => items.length > 1 && setItems(items.filter((_, i) => i !== idx));
   const updateItem = (idx: number, field: "weight" | "value", val: number) => {
     const next = [...items];
-    next[idx] = { ...next[idx], [field]: Math.max(1, val) };
+    next[idx] = { ...next[idx], [field]: Number.isFinite(val) ? val : 0 };
     setItems(next);
   };
 
@@ -168,7 +169,7 @@ function KnapsackVisualizer() {
         <p className="text-sm text-muted-foreground">
           Enter item weights, values, and knapsack capacity. The system dynamically generates the DP table and highlights the optimal selection.
         </p>
-        <NeonInput label="Knapsack Capacity (W)" value={capacity} onChange={(v) => setCapacity(Math.max(1, Math.min(15, Number(v) || 1)))} min={1} max={15} className="max-w-xs" />
+        <NeonInput label="Knapsack Capacity (W)" value={capacity} onChange={(v) => setCapacity(Number(v) || 0)} className="max-w-xs" />
 
         <div className="space-y-2">
           <div className="flex items-center justify-between">
@@ -192,11 +193,11 @@ function KnapsackVisualizer() {
                   <tr key={i}>
                     <td className="px-3 py-1 font-mono">{i + 1}</td>
                     <td className="px-3 py-1">
-                      <input type="number" value={item.weight} min={1} onChange={(e) => updateItem(i, "weight", Number(e.target.value))}
+                      <input type="number" value={item.weight} onChange={(e) => updateItem(i, "weight", Number(e.target.value))}
                         className="w-16 bg-secondary border border-border rounded px-2 py-1 font-mono text-sm focus:border-primary outline-none" />
                     </td>
                     <td className="px-3 py-1">
-                      <input type="number" value={item.value} min={1} onChange={(e) => updateItem(i, "value", Number(e.target.value))}
+                      <input type="number" value={item.value} onChange={(e) => updateItem(i, "value", Number(e.target.value))}
                         className="w-16 bg-secondary border border-border rounded px-2 py-1 font-mono text-sm focus:border-primary outline-none" />
                     </td>
                     <td className="px-3 py-1">
@@ -300,7 +301,7 @@ function MCMVisualizer() {
   const removeMatrix = () => dims.length > 3 && setDims(dims.slice(0, -1));
   const updateDim = (idx: number, val: number) => {
     const next = [...dims];
-    next[idx] = Math.max(1, val);
+    next[idx] = Number.isFinite(val) ? val : 0;
     setDims(next);
   };
 
@@ -338,7 +339,7 @@ function MCMVisualizer() {
             {dims.map((d, i) => (
               <div key={i} className="space-y-1">
                 <span className="text-[10px] text-muted-foreground font-mono block text-center">d{i}</span>
-                <input type="number" value={d} min={1} onChange={(e) => updateDim(i, Number(e.target.value))}
+                <input type="number" value={d} onChange={(e) => updateDim(i, Number(e.target.value))}
                   className="w-16 bg-secondary border border-border rounded-lg px-2 py-1.5 font-mono text-sm text-center focus:border-primary focus:ring-1 focus:ring-primary/30 outline-none transition-all" />
               </div>
             ))}
