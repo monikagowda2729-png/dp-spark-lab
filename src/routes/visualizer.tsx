@@ -339,7 +339,7 @@ function MCMVisualizer() {
             {dims.map((d, i) => (
               <div key={i} className="space-y-1">
                 <span className="text-[10px] text-muted-foreground font-mono block text-center">d{i}</span>
-                <input type="number" value={d} min={1} onChange={(e) => updateDim(i, Number(e.target.value))}
+                <input type="number" value={d} onChange={(e) => updateDim(i, Number(e.target.value))}
                   className="w-16 bg-secondary border border-border rounded-lg px-2 py-1.5 font-mono text-sm text-center focus:border-primary focus:ring-1 focus:ring-primary/30 outline-none transition-all" />
               </div>
             ))}
