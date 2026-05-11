@@ -301,7 +301,7 @@ function MCMVisualizer() {
   const removeMatrix = () => dims.length > 3 && setDims(dims.slice(0, -1));
   const updateDim = (idx: number, val: number) => {
     const next = [...dims];
-    next[idx] = Math.max(1, val);
+    next[idx] = Number.isFinite(val) ? val : 0;
     setDims(next);
   };
 
