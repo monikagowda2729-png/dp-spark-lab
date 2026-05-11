@@ -193,11 +193,11 @@ function KnapsackVisualizer() {
                   <tr key={i}>
                     <td className="px-3 py-1 font-mono">{i + 1}</td>
                     <td className="px-3 py-1">
-                      <input type="number" value={item.weight} min={1} onChange={(e) => updateItem(i, "weight", Number(e.target.value))}
+                      <input type="number" value={item.weight} onChange={(e) => updateItem(i, "weight", Number(e.target.value))}
                         className="w-16 bg-secondary border border-border rounded px-2 py-1 font-mono text-sm focus:border-primary outline-none" />
                     </td>
                     <td className="px-3 py-1">
-                      <input type="number" value={item.value} min={1} onChange={(e) => updateItem(i, "value", Number(e.target.value))}
+                      <input type="number" value={item.value} onChange={(e) => updateItem(i, "value", Number(e.target.value))}
                         className="w-16 bg-secondary border border-border rounded px-2 py-1 font-mono text-sm focus:border-primary outline-none" />
                     </td>
                     <td className="px-3 py-1">
