@@ -9,7 +9,7 @@ export const Route = createFileRoute("/")({
 
 function Dashboard() {
   const stats = [
-    { label: "Problems Available", value: 3, suffix: "+", icon: Layers, color: "var(--neon-purple)" },
+    { label: "Problems Available", value: 4, suffix: "+", icon: Layers, color: "var(--neon-purple)" },
     { label: "Time Saved (avg)", value: 95, suffix: "%", icon: Clock, color: "var(--neon-blue)" },
     { label: "Recursive Calls Avoided", value: 10842, suffix: "", icon: Brain, color: "var(--neon-cyan)" },
     { label: "Performance Boost", value: 500, suffix: "x", icon: TrendingUp, color: "var(--neon-purple)" },
@@ -33,6 +33,12 @@ function Dashboard() {
       description: "String comparison with matrix animation",
       complexity: "O(mn)",
       icon: Layers,
+    },
+    {
+      title: "Matrix Chain Multiplication",
+      description: "Find optimal parenthesization with M and K split tables",
+      complexity: "O(n³)",
+      icon: Grid3X3,
     },
   ];
 
