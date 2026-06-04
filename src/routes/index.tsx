@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 import { GlassCard } from "@/components/GlassCard";
-import { Zap, Clock, Brain, TrendingUp, ArrowRight, Layers, GitBranch, Table2 } from "lucide-react";
+import { Zap, Clock, Brain, TrendingUp, ArrowRight, Layers, GitBranch, Table2, Grid3X3 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   component: Dashboard,
