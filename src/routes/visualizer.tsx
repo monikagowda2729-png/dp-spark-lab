@@ -115,6 +115,8 @@ function FibonacciVisualizer() {
         title={`Fibonacci DP Array (n=${n})`}
       />
 
+      <FibonacciRecursionTree n={Math.max(0, Number.isFinite(n) ? Math.floor(n) : 0)} />
+
       <GlassCard>
         <h3 className="font-bold mb-2">Complexity Analysis</h3>
         <div className="grid grid-cols-2 gap-4 text-sm">
@@ -131,6 +133,91 @@ function FibonacciVisualizer() {
         </div>
       </GlassCard>
     </div>
+  );
+}
+
+/* ─── Fibonacci Recursion Tree ─── */
+function FibonacciRecursionTree({ n }: { n: number }) {
+  const MAX_DEPTH = 6; // safety cap for visualization
+  const display = Math.min(n, MAX_DEPTH);
+  const truncated = n > MAX_DEPTH;
+
+  type Node = { id: string; label: number; x: number; y: number; children: Node[]; memoHit?: boolean };
+  const LEVEL_H = 70;
+
+  const seen = new Set<number>();
+  const build = (val: number, depth: number, xMin: number, xMax: number, idPrefix: string): Node => {
+    const x = (xMin + xMax) / 2;
+    const y = depth * LEVEL_H + 30;
+    const memoHit = seen.has(val);
+    seen.add(val);
+    const node: Node = { id: idPrefix, label: val, x, y, children: [], memoHit };
+    if (val > 1) {
+      const mid = (xMin + xMax) / 2;
+      node.children.push(build(val - 1, depth + 1, xMin, mid, idPrefix + "L"));
+      node.children.push(build(val - 2, depth + 1, mid, xMax, idPrefix + "R"));
+    }
+    return node;
+  };
+
+  const width = Math.max(600, Math.pow(2, display) * 40);
+  const root = display >= 0 ? build(display, 0, 0, width, "n") : null;
+
+  const flatten = (node: Node | null, acc: Node[] = []): Node[] => {
+    if (!node) return acc;
+    acc.push(node);
+    node.children.forEach((c) => flatten(c, acc));
+    return acc;
+  };
+  const nodes = flatten(root);
+  const maxDepth = display;
+  const height = (maxDepth + 1) * LEVEL_H + 20;
+
+  return (
+    <GlassCard className="space-y-3">
+      <div className="flex items-center justify-between flex-wrap gap-2">
+        <h3 className="font-bold">Recursion Tree (Naive Recursive Call Graph)</h3>
+        <div className="flex gap-3 text-xs">
+          <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-full" style={{ background: "var(--neon-purple)" }} />New call</span>
+          <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-full" style={{ background: "var(--destructive)" }} />Repeated (wasted)</span>
+        </div>
+      </div>
+      {truncated && (
+        <p className="text-xs text-destructive">
+          Tree rendering capped at n={MAX_DEPTH} for readability. The recursive tree for n={n} would have ~{Math.round(Math.pow(1.618, n))} nodes — exactly why DP wins.
+        </p>
+      )}
+      {display < 1 ? (
+        <p className="text-xs text-muted-foreground">Enter n ≥ 2 to see the recursion tree.</p>
+      ) : (
+        <div className="overflow-x-auto">
+          <svg width={width} height={height} className="mx-auto block">
+            {nodes.flatMap((node) =>
+              node.children.map((c) => (
+                <line key={node.id + "-" + c.id} x1={node.x} y1={node.y} x2={c.x} y2={c.y}
+                  stroke="var(--border)" strokeWidth={1.5} opacity={0.6} />
+              ))
+            )}
+            {nodes.map((node) => (
+              <g key={node.id} className="animate-fade-in">
+                <circle cx={node.x} cy={node.y} r={18}
+                  fill={node.memoHit ? "var(--destructive)" : "var(--neon-purple)"}
+                  opacity={node.memoHit ? 0.55 : 0.9}
+                  stroke={node.memoHit ? "var(--destructive)" : "var(--neon-cyan)"}
+                  strokeWidth={1.5} />
+                <text x={node.x} y={node.y + 4} textAnchor="middle"
+                  fontSize={12} fontWeight={700} fill="white" fontFamily="monospace">
+                  F({node.label})
+                </text>
+              </g>
+            ))}
+          </svg>
+        </div>
+      )}
+      <p className="text-xs text-muted-foreground">
+        Red nodes are <strong>repeated subproblems</strong> — every red call is recomputed from scratch in naive recursion. DP solves each subproblem <strong>once</strong>.
+      </p>
+    </GlassCard>
   );
 }
 
@@ -396,8 +483,8 @@ function MCMVisualizer() {
       </div>
 
       <GlassCard>
-        <h3 className="font-bold mb-2">Split Table (k values)</h3>
-        <p className="text-xs text-muted-foreground mb-3">Shows the optimal split point k for each subproblem (i,j).</p>
+        <h3 className="font-bold mb-2">K Matrix — Optimal Split Points</h3>
+        <p className="text-xs text-muted-foreground mb-3">K[i][j] stores the split index k where the chain Aᵢ…Aⱼ is optimally broken into (Aᵢ…A<sub>k</sub>)(A<sub>k+1</sub>…Aⱼ). Used to reconstruct the parenthesization.</p>
         <div className="overflow-x-auto">
           <table className="border-separate border-spacing-1">
             <thead>

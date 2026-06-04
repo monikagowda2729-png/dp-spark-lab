@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 import { GlassCard } from "@/components/GlassCard";
-import { Zap, Clock, Brain, TrendingUp, ArrowRight, Layers, GitBranch, Table2 } from "lucide-react";
+import { Zap, Clock, Brain, TrendingUp, ArrowRight, Layers, GitBranch, Table2, Grid3X3 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   component: Dashboard,
@@ -9,7 +9,7 @@ export const Route = createFileRoute("/")({
 
 function Dashboard() {
   const stats = [
-    { label: "Problems Available", value: 3, suffix: "+", icon: Layers, color: "var(--neon-purple)" },
+    { label: "Problems Available", value: 4, suffix: "+", icon: Layers, color: "var(--neon-purple)" },
     { label: "Time Saved (avg)", value: 95, suffix: "%", icon: Clock, color: "var(--neon-blue)" },
     { label: "Recursive Calls Avoided", value: 10842, suffix: "", icon: Brain, color: "var(--neon-cyan)" },
     { label: "Performance Boost", value: 500, suffix: "x", icon: TrendingUp, color: "var(--neon-purple)" },
@@ -33,6 +33,12 @@ function Dashboard() {
       description: "String comparison with matrix animation",
       complexity: "O(mn)",
       icon: Layers,
+    },
+    {
+      title: "Matrix Chain Multiplication",
+      description: "Find optimal parenthesization with M and K split tables",
+      complexity: "O(n³)",
+      icon: Grid3X3,
     },
   ];
 
@@ -80,7 +86,7 @@ function Dashboard() {
       {/* Problem Cards */}
       <section className="space-y-4">
         <h2 className="text-2xl font-bold">Available Problems</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {problems.map((p) => (
             <Link key={p.title} to="/visualizer" className="group">
               <GlassCard className="h-full hover:border-primary/50 transition-all duration-300 group-hover:shadow-[0_0_30px_oklch(0.65_0.28_290/20%)]">
