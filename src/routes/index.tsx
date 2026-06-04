@@ -86,7 +86,7 @@ function Dashboard() {
       {/* Problem Cards */}
       <section className="space-y-4">
         <h2 className="text-2xl font-bold">Available Problems</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {problems.map((p) => (
             <Link key={p.title} to="/visualizer" className="group">
               <GlassCard className="h-full hover:border-primary/50 transition-all duration-300 group-hover:shadow-[0_0_30px_oklch(0.65_0.28_290/20%)]">
