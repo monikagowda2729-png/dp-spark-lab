@@ -483,8 +483,8 @@ function MCMVisualizer() {
       </div>
 
       <GlassCard>
-        <h3 className="font-bold mb-2">Split Table (k values)</h3>
-        <p className="text-xs text-muted-foreground mb-3">Shows the optimal split point k for each subproblem (i,j).</p>
+        <h3 className="font-bold mb-2">K Matrix — Optimal Split Points</h3>
+        <p className="text-xs text-muted-foreground mb-3">K[i][j] stores the split index k where the chain Aᵢ…Aⱼ is optimally broken into (Aᵢ…A<sub>k</sub>)(A<sub>k+1</sub>…Aⱼ). Used to reconstruct the parenthesization.</p>
         <div className="overflow-x-auto">
           <table className="border-separate border-spacing-1">
             <thead>
